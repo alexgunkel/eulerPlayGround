@@ -64,5 +64,33 @@ TEST(NumberSplittingTest, testHasNotSum) {
 TEST(NumberSplittingTest, testCheckSum) {
     EXPECT_FALSE(hasCheckSum("1234", 1133));
     EXPECT_TRUE(hasCheckSum("1234", 19));
-    EXPECT_TRUE(hasCheckSum("884", 190));
+}
+
+TEST(FromStringTest, testresults) {
+    const char* in = "012345";
+
+    EXPECT_EQ(12345, fromString<int>(in, 6));
+    EXPECT_EQ(1234, fromString<int>(in, 5));
+}
+
+TEST(NumberSplittingChar, testCstrings) {
+    EXPECT_TRUE(hasSum("222", 3, 6));
+    EXPECT_TRUE(hasSum("222", 3, 24));
+    EXPECT_TRUE(hasSum("222", 2, 4));
+    EXPECT_TRUE(hasSum("222", 1, 2));
+    EXPECT_TRUE(hasSum("222", 0, 0));
+}
+
+TEST(NumberStringHasSum, testHasSum) {
+    using String = NumberString<int, 6>;
+
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 0, 4, 10)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 0, 6, 10)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 0, 3, 9)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 0, 2, 7)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 0, 1, 4)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 1, 4, 6)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 1, 3, 3)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{1234}, 2, 4, 2)));
+    EXPECT_TRUE((stringHasSum<int, 6>(String{12}, 0, 2, 12)));
 }

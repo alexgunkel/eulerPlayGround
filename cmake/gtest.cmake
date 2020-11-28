@@ -9,11 +9,3 @@ ExternalProject_Add(googletest_ep
         )
 
 link_directories(${EXTERNAL_INSTALL_LOCATION}/lib64)
-
-file(GLOB test-sources "*_test.cpp")
-
-add_executable(tests "")
-target_sources(tests PRIVATE test_main.cpp ${test-sources})
-target_include_directories(tests PRIVATE ${PROJECT_SOURCE_DIR}/src ${EXTERNAL_INSTALL_LOCATION}/include)
-target_link_libraries(tests PRIVATE gtest pthread)
-add_dependencies(tests googletest_ep)

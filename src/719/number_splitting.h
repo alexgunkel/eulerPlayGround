@@ -2,12 +2,28 @@
 #ifndef EULERPLAYGROUND_NUMBER_SPLITTING_H
 #define EULERPLAYGROUND_NUMBER_SPLITTING_H
 
+#include "number_string.h"
 #include <algorithm>
 #include <cassert>
 #include <vector>
 #include <string>
 #include <iostream>
 #include <numeric>
+
+template<class IntegralType, uint8_t positions>
+bool stringHasSum(NumberString<IntegralType, positions> in, uint8_t from, uint8_t to, IntegralType value) {
+    auto pos = to;
+    while (pos > from) {
+        IntegralType interim = in.toInt(from, pos-from);
+
+        if (stringHasSum<IntegralType, positions>(in, pos, to, value - interim)) {
+            return true;
+        }
+        pos--;
+    }
+
+    return value == IntegralType{};
+}
 
 template<class T>
 std::vector<T> calculateSums(const std::string& input) {
@@ -47,21 +63,54 @@ bool hasCheckSum(const std::string& input, T value) {
     return result == compare;
 }
 
+template<class  T>
+T fromString(const char* in, size_t length) {
+    T res{};
+    while (*in && length--) {
+        res = 10*res + (*in - '0');
+        in++;
+    }
+
+    return res;
+}
+
 template<class T>
-bool hasSum(const std::string& input, T value) {
-    uint length = input.length();
+bool hasSum(const char* in, size_t length, T value) {
+    assert(length >= 0);
+    assert(in);
     if (length == 0) {
         return value == 0;
     }
 
+    size_t pos = length;
     while (length) {
-        T firstPartValue = std::stoull(input.substr(0, length));
+        T firstPartValue = fromString<T>(in, length);
 
-        if (hasSum(input.substr(length), value-firstPartValue)) {
+        if (hasSum<T>(in+length, pos-length, value-firstPartValue)) {
             return true;
         }
 
         length--;
+    }
+
+    return false;
+}
+
+template<class T>
+bool hasSum(const std::string& input, T value) {
+    uint length_ = input.length();
+    if (length_ == 0) {
+        return value == 0;
+    }
+
+    while (length_) {
+        T firstPartValue = std::stoull(input.substr(0, length_));
+
+        if (hasSum(input.substr(length_), value-firstPartValue)) {
+            return true;
+        }
+
+        length_--;
     }
 
     return false;
@@ -73,6 +122,13 @@ bool hasSplittingTo(T source, T target) {
     const auto splitSums = calculateSums<T>(representation);
 
     return std::find(splitSums.begin(), splitSums.end(), target) != splitSums.end();
+}
+
+template<class T, int l>
+size_t toString(T i, char* t) {
+    while (i) {
+
+    }
 }
 
 #endif //EULERPLAYGROUND_NUMBER_SPLITTING_H

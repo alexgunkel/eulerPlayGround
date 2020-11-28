@@ -1,2 +1,4 @@
 
-add_executable(number_split number_splitting.cpp number_splitting.h)
+set(TEST_MAIN ${PROJECT_SOURCE_DIR}/src/test_main.cpp)
+
+add_subdirectory(719)
