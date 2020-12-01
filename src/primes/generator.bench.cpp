@@ -2,6 +2,8 @@
 
 #include "benchmark/benchmark.h"
 
+#include <cmath>
+
 namespace {
 void bm_construct_generate(benchmark::State& state) {
     for (const auto _ : state) {
@@ -13,4 +15,4 @@ void bm_construct_generate(benchmark::State& state) {
 }
 }
 
-BENCHMARK(bm_construct_generate)->Range(2, 2u<<8u);
+BENCHMARK(bm_construct_generate)->RangeMultiplier(10)->Range(10, std::pow(10, 10));
