@@ -1,6 +1,6 @@
 #include "solver.hpp"
 
-#include "sieve.hpp"
+#include "analyzer.hpp"
 
 #include <cassert>
 #include <tbb/tbb.h>
@@ -10,7 +10,7 @@ Integer Solver::solve(Integer input) {
     Integer res{};
 
     for (Integer i = 0; i <= input; i++) {
-        res += Sieve::solve(i);
+        res += Analyzer::solve(i);
     }
 
     return res;
@@ -23,7 +23,7 @@ Integer Solver::solveParallel(Integer input) {
         [](const tbb::blocked_range<Integer> &range, Integer given) {
             for (auto i = range.begin(); i < range.end(); i++) {
                 assert(given < std::numeric_limits<decltype(given)>::max() / 2);
-                given += Sieve::solveParallel(i);
+                given += Analyzer::solveParallel(i);
             }
 
             return given;

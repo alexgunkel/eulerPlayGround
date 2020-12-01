@@ -1,55 +1,35 @@
 #include "sieve.hpp"
-#include <cassert>
-#include <cmath>
-#include <numeric>
-#include <tbb/tbb.h>
-#include <vector>
 
 namespace eu_735 {
+Sieve::Sieve(Sieve::Input i): length_{i}, sieve_(i, 0) {
+    const auto max{length_*length_*2};
+    Input k, v;
+    for (Input j = 1; j <= length_; ++j) {
+        k = j;
+        v = k*k;
+        auto start{2*j*j};
+        while (start <= max) {
+            if (start % 2 == 0) {
+                const auto half = start/2;
+                while (v < half) {
+                    k++;
+                    v = k*k;
+                }
 
-namespace {
-const Sieve::Input maxPossible =
-    std::sqrt(std::numeric_limits<Sieve::Input>::max());
-bool dividedBy(Sieve::Input v, Sieve::Input divisor) {
-    if (auto mod = 2 % divisor; mod) {
-        assert(std::numeric_limits<Sieve::Input>::max() / mod > v);
-        if (mod = (mod * v) % divisor; mod) {
-            assert(std::numeric_limits<Sieve::Input>::max() / mod > v);
-            return (mod * v) % divisor == 0;
-        }
-    }
-
-    return true;
-}
-} // namespace
-
-Sieve::Result Sieve::solve(Sieve::Input input) {
-    std::vector<bool> sieve(input, true);
-    for (auto it = sieve.begin(); it != sieve.end(); it++) {
-        auto pos = it - sieve.begin() + 1;
-        if (!dividedBy(input, pos)) {
-            *it = false;
-        }
-    }
-
-    return std::accumulate(sieve.begin(), sieve.end(), 0);
-}
-Sieve::Result Sieve::solveParallel(Sieve::Input input) {
-    bool* sieve = new bool[input];
-    std::fill(sieve, sieve+input, true);
-
-    tbb::parallel_for(
-        tbb::blocked_range<Sieve::Input>(0, input),
-        [sieve, input](const tbb::blocked_range<Sieve::Input> &range) {
-            for (auto i = range.begin(); i < range.end(); ++i) {
-                if (!dividedBy(input, i + 1)) {
-                    sieve[i] = false;
+                if (v == half) {
+                    sieve_[k-1]++;
                 }
             }
-        });
+            start += j;
+        }
+    }
+}
 
-    auto res = std::accumulate(sieve, sieve+input, 0);
-    delete [] sieve;
+Sieve::Result Sieve::solve() {
+    Sieve::Result res{};
+    for (Input i = 1; i <= length_; i++) {
+        res += sieve_[i-1];
+    }
 
     return res;
 }
