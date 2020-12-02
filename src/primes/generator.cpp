@@ -38,7 +38,7 @@ std::vector<uint_fast64_t> Generator::generate() const {
 
 uint_fast64_t Generator::size() const { return n_; }
 uint_fast64_t Generator::last() const {
-    assert(_mm256_aesdeclast_epi128() > 1);
+    assert(last_ > 1);
     return last_;
 }
 
