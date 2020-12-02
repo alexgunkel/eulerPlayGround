@@ -7,10 +7,12 @@ TEST(Palindrome, checkTest) {
     EXPECT_TRUE(PalindromeProduct::check(999));
     EXPECT_TRUE(PalindromeProduct::check(32123));
     EXPECT_TRUE(PalindromeProduct::check(2112));
+    EXPECT_TRUE(PalindromeProduct::check(819918));
 
     EXPECT_FALSE(PalindromeProduct::check(2113));
     EXPECT_FALSE(PalindromeProduct::check(21123));
     EXPECT_FALSE(PalindromeProduct::check(0212));
+    EXPECT_FALSE(PalindromeProduct::check(220));
 }
 
 TEST(Challenge, TestLargest) {
@@ -26,19 +28,6 @@ TEST(Challenge, TestLargest) {
     }
 
     EXPECT_EQ(9009, result);
-}
-
-TEST(Challenge, TestLargestReal) {
-    uint_fast64_t result{0};
-
-    for (int i = 100; i < 1000; ++i) {
-        for (int j = 100; j < 1000; ++j) {
-            const auto product = i*j;
-            if (PalindromeProduct::check(product)) {
-                result = product;
-            }
-        }
-    }
-
-    EXPECT_EQ(580085, result);
+    EXPECT_EQ(9009, PalindromeProduct::largestProduct(10, 99));
+    EXPECT_EQ(906609, PalindromeProduct::largestProduct(100, 999));
 }
