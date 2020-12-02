@@ -10,13 +10,8 @@ TEST(Palindrome, TestFriends) {
 }
 
 TEST(Palindrome, AllLessEqual) {
-    uint64_t result{0};
-
-    for (int i = 0; i < 10000; ++i) {
-        if (const auto res = PalindromeSums::findFriend(i); res) {
-            result += res.value();
-        }
-    }
-
-    EXPECT_EQ(40284, result);
+    EXPECT_EQ(0, PalindromeSums::sumUp(9));
+    EXPECT_EQ(0, PalindromeSums::sumUp(99));
+    EXPECT_EQ(504, PalindromeSums::sumUp(999));
+    EXPECT_EQ(31626, PalindromeSums::sumUp(9999));
 }
