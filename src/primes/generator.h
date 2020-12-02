@@ -3,6 +3,7 @@
 
 #include <cinttypes>
 #include <vector>
+#include <map>
 
 namespace primes {
 class Generator {
