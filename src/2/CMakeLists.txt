@@ -1,8 +1,7 @@
 
-add_library(fib fibonacci.hpp fibonacci.cpp)
+add_executable(tst-2 fibonacci.test.cpp)
+target_link_libraries(tst-2 test_main)
+target_include_directories(tst-2 PRIVATE ${LIB_includes})
 
-add_executable(tst-fib fibonacci.test.cpp)
-target_link_libraries(tst-fib fib test_main)
-
-add_executable(eu2 main.cpp)
-target_link_libraries(eu2 fib)
+add_executable(run-2 main.cpp)
+target_include_directories(run-2 PRIVATE ${LIB_includes})

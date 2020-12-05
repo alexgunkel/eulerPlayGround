@@ -2,7 +2,7 @@
 #include <iostream>
 
 int main() {
-    eu2::Fibonacci fib{4'000'000};
+    eu::fibonacci::Generator generator{100};
 
-    std::cout << fib.get() << "\n";
+    std::cout << generator.greatest(4'000'000) << "\n";
 };

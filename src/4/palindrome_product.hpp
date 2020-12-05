@@ -20,12 +20,10 @@ class PalindromeProduct {
 
     static uint_fast64_t largestProduct(const uint_fast64_t min, const uint_fast64_t max) {
         uint_fast64_t result{0};
-        uint_fast64_t k, l;
         for (uint_fast64_t i = min; i <= max; i++) {
             for (uint_fast64_t j = i; j <= max; ++j) {
                 if (const uint_fast64_t p = i*j; check(p) && p > result) {
                     result = p;
-                    k = i; l = j;
                 }
             }
         }
