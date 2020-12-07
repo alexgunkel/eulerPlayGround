@@ -73,4 +73,10 @@ template <typename Basis, unsigned int NumberOfValues> class TruthTableChain {
     }
 };
 
+template <typename Basis, unsigned int positions>
+bool areNeighbours(const Basis& left, const Basis& right)
+{
+    const bool mostLeft = left & (1 << (positions-1));
+}
+
 #endif // EULERPLAYGROUND_TRUTH_TABLE_HPP

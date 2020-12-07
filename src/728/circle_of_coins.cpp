@@ -1,5 +1,6 @@
 
 #include "circle_of_coins.hpp"
+#include "gcd.hpp"
 #include <cassert>
 #include <set>
 
@@ -36,12 +37,13 @@ uint64_t CircleOfCoins::numberOfPossibleSolutions() const {
         return 2ull;
     }
 
-    if (!(flips_ & 1ull)) {
-        return 2ull << (coins_ - 2);
+    if (gcd(flips_, coins_) > 2) {
+        const uint64_t diff = std::min(flips_, coins_-flips_);
+        return (1ull << (coins_-diff+1));
     }
 
-    if (flips_ != 1 && (coins_ % flips_) == 0) {
-        return (1ull << coins_) / (flips_ + 1);
+    if (!(flips_ & 1ull)) {
+        return 1ull << (coins_ - 1);
     }
 
     return 1ull << coins_;

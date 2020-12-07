@@ -40,3 +40,36 @@ TEST(CircleOfCoins, testAccumulation)
     EXPECT_EQ(22, sumUpTo(3));
     EXPECT_EQ(10444, sumUpTo(10));
 }
+
+TEST(CircleOfCoins, testDividables)
+{
+    EXPECT_EQ(1u << 18u, CircleOfCoins(18, 1).reachableStates(0).size());
+    EXPECT_EQ(1u << 18u, CircleOfCoins(18, 1).numberOfPossibleSolutions());
+
+    EXPECT_EQ(1u << 17u, CircleOfCoins(18, 2).reachableStates(0).size());
+    EXPECT_EQ(1u << 17u, CircleOfCoins(18, 2).numberOfPossibleSolutions());
+
+    EXPECT_EQ(1u << 16u, CircleOfCoins(18, 3).reachableStates(0).size());
+    EXPECT_EQ(1u << 16u, CircleOfCoins(18, 3).numberOfPossibleSolutions());
+
+    EXPECT_EQ(1u << 16u, CircleOfCoins(18, 4).reachableStates(0).size());
+    EXPECT_EQ(1u << 16u, CircleOfCoins(18, 4).numberOfPossibleSolutions());
+
+    EXPECT_EQ(1u << 18u, CircleOfCoins(18, 5).reachableStates(0).size());
+    EXPECT_EQ(1u << 18u, CircleOfCoins(18, 5).numberOfPossibleSolutions());
+
+    EXPECT_EQ(1u << 13u, CircleOfCoins(18, 6).reachableStates(0).size());
+    EXPECT_EQ(1u << 13u, CircleOfCoins(18, 6).numberOfPossibleSolutions());
+
+    EXPECT_EQ(1u << 16u, CircleOfCoins(18, 8).reachableStates(0).size());
+    EXPECT_EQ(1u << 10u, CircleOfCoins(18, 9).reachableStates(0).size());
+    EXPECT_EQ(1u << 17u, CircleOfCoins(18, 10).reachableStates(0).size());
+}
+
+TEST(CircleOfCoins, testSets)
+{
+    CircleOfCoins circleOfCoins(8, 4);
+    const auto res = circleOfCoins.reachableStates(7);
+
+    EXPECT_EQ(32, res.size());
+}
