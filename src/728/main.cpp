@@ -5,7 +5,7 @@
 int run()
 {
     uint64_t sum{0};
-    for (uint64_t i = 1; i <= 20; ++i) {
+    for (uint64_t i = 1; i <= 10; ++i) {
         for (uint64_t j = 1; j <= i; ++j) {
             const CircleOfCoins circle(i, j);
             const uint64_t options = circle.numberOfPossibleSolutions();
@@ -13,7 +13,7 @@ int run()
 
             sum = (sum + reachables.size()) % 1'000'000'007;
 
-            std::cout << i << ", " << j << ": " << options << ", " << reachables.size() << "\n";
+            std::cout << i << ", " << j << ": " << options << ", " << reachables.size() << "\t\t" << circle.smallestModulo() << "\n";
         }
 
         std::cout << "\t\t\tafter " << i << ": " << sum << "\n";
@@ -22,20 +22,27 @@ int run()
     std::cout << sum << "\n";
 }
 
+int print()
+{
+    CircleOfCoins circleOfCoins(14, 8);
+    std::cout << circleOfCoins.numberOfPossibleSolutions() << "\n";
+
+    for (uint64_t i = 0; i < 9; i++) {
+        for (const auto state : circleOfCoins.reachableStates(i)) {
+            std::cout << state << " : " << std::bitset<14>{state} << "\t";
+        }
+        std::cout << "\n";
+    }
+
+}
+
 int main()
 {
-    CircleOfCoins circleOfCoins{18, 6};
-    CircleOfCoins circleOfCoins2{18, 12};
-    auto res = circleOfCoins.reachableStates(0);
-    auto res2 = circleOfCoins2.reachableStates(0);
-    std::vector<uint64_t> diff{};
-    diff.reserve(res.size() - res2.size());
-    std::set_difference(res.begin(), res.end(), res2.begin(), res2.end(), diff.begin());
-
-    for (const auto& state : res) {
-        if (!res2.contains(state)) {
-            std::cout << std::bitset<32>{state} << "\n";
-        }
-    }
-    return 0;
+    return print();
 }
+
+/**
+ * 6-4 -2
+ * 9-6 -3
+ * 10-8 -2
+ */
