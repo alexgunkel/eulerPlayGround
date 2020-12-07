@@ -12,6 +12,7 @@ class CircleOfCoins {
 
     [[nodiscard]] std::set<uint64_t> reachableStates(uint64_t start) const;
     [[nodiscard]] uint64_t numberOfPossibleSolutions() const;
+    uint64_t smallestModulo() const;
 
   private:
     uint64_t coins_;

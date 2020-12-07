@@ -48,3 +48,21 @@ uint64_t CircleOfCoins::numberOfPossibleSolutions() const {
 
     return 1ull << coins_;
 }
+uint64_t CircleOfCoins::smallestModulo() const {
+    uint64_t res{flips_}, runner{flips_};
+    uint64_t round{1};
+
+    while (round <= coins_ && res > 1) {
+        runner += flips_;
+        if (runner > coins_) {
+            runner = (runner % coins_);
+            round++;
+        }
+
+        if (round % 2) {
+            res = std::min(res, runner);
+        }
+    }
+
+    return res;
+}

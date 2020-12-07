@@ -4,11 +4,22 @@
 
 TEST(CircleOfCoins, testGetReachables)
 {
-    CircleOfCoins circle(9, 3);
+    CircleOfCoins circle(9, 6);
 
-    const auto res = circle.reachableStates(0);
+    std::vector<std::set<uint64_t>> res{};
+    res.reserve(15);
+    for (int i = 0; i < 15; ++i) {
+        res.push_back(circle.reachableStates(i));
+    }
 
     EXPECT_EQ(4, res.size());
+}
+
+TEST(CircleOfCoins, smallestModuloProduct) {
+    EXPECT_EQ(1, CircleOfCoins(8, 3).smallestModulo());
+    EXPECT_EQ(3, CircleOfCoins(9, 3).smallestModulo());
+    EXPECT_EQ(6, CircleOfCoins(18, 6).smallestModulo());
+    EXPECT_EQ(12, CircleOfCoins(18, 12).smallestModulo());
 }
 
 TEST(CircleOfCoins, numberOfPossibleSolutions)
