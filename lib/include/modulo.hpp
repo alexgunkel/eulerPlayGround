@@ -1,5 +1,7 @@
 #ifndef EULERPLAYGROUND_MODULO_HPP
 #define EULERPLAYGROUND_MODULO_HPP
+
+#include <cassert>
 #include <cinttypes>
 #include <cmath>
 #include <memory>
@@ -33,10 +35,11 @@ class Power
         raiseSize(size);
     };
 
-    uint64_t get(uint64_t key) {
+    [[nodiscard]] uint64_t get(uint64_t key) const {
         const auto i = interval_.interval;
         const auto lastBase = key / interval_.interval;
         const auto additional = key % i;
+        assert(lastBase < cache_.size());
         const auto basis = cache_.at(lastBase);
         const uint64_t result = basis * std::pow(Base, additional);
 
