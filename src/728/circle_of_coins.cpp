@@ -1,8 +1,14 @@
 
 #include "circle_of_coins.hpp"
+#include "modulo.hpp"
 #include "gcd.hpp"
 #include <cassert>
 #include <set>
+
+namespace
+{
+Power<2, 1'000'000'007> powerOfTwo{10'000};
+}
 
 CircleOfCoins::CircleOfCoins(uint64_t coins, uint64_t flips)
     : coins_{coins}, flips_{flips}, coinMask_{(1ull << coins)-1}, operations_{} {
@@ -43,9 +49,8 @@ uint64_t CircleOfCoins::numberOfPossibleSolutions() const {
         flipsCopy += mod;
     }
     const auto pow = coins_ - mod;
-    assert(pow < 63);
 
-    return 2ull << pow;
+    return powerOfTwo.get(pow+1);
 }
 uint64_t CircleOfCoins::smallestModulo() const {
     uint64_t res{flips_}, runner{flips_};

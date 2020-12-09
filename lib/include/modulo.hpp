@@ -56,7 +56,6 @@ template <uint64_t Basis, uint64_t Modulo>
 void Power<Basis, Modulo>::raiseSize(uint64_t size) {
     size = (size / interval_.interval);
     cache_.reserve(size);
-    size -= cache_.size();
     while (size--) {
         cache_.push_back(
             (cache_.back() * interval_.power) % Modulo

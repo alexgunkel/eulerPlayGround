@@ -18,4 +18,5 @@ TEST(Modulo, testSimpleExamples)
     EXPECT_EQ(6, power.get(4));
 
     EXPECT_EQ(5, (Power<5, 10>){10}.get(3));
+    EXPECT_EQ(1539587653, (Power<2, 10'000'000'007>){10'000}.get(4'000));
 }
