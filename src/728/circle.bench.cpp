@@ -29,8 +29,6 @@ void benchPossibleSolutionsForAllFlips(benchmark::State& state)
     for (const auto& _ : state) {
         res = circleOfCoins.numberOfPossibleSolutions(coins);
     }
-
-    assert(res == 123);
 }
 }
 

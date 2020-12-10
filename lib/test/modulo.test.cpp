@@ -1,4 +1,5 @@
 #include "modulo.hpp"
+#include "gcd.hpp"
 
 #include "gtest/gtest.h"
 
@@ -32,6 +33,15 @@ TEST_P(SmallestMultipleTest, testExamples) {
 
     const auto result{findSmallestMultipleFast(sample.base, sample.modulo)};
     EXPECT_EQ(sample.expected, result);
+}
+
+TEST_P(SmallestMultipleTest, testExamplesWithGdc)
+{
+    const auto sample{GetParam()};
+
+    const auto smallestMultiple{findSmallestMultiple(sample.base, sample.modulo)};
+    const auto divisor{gcd(sample.base, sample.modulo)};
+    EXPECT_EQ(smallestMultiple, divisor);
 }
 
 INSTANTIATE_TEST_SUITE_P(TestSamples, SmallestMultipleTest,

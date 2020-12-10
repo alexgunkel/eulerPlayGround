@@ -36,22 +36,43 @@ uint64_t CircleOfCoins::normalize(uint64_t coins, uint64_t value) {
     return (value | afterEnd) & coinMask;
 }
 
-uint64_t CircleOfCoins::numberOfPossibleSolutions(uint64_t coins, uint64_t flips) const {
-    uint64_t mod = smallestModulo(coins, flips);
-    uint64_t times = (coins-1)/mod;
-    if (uint64_t flipsCopy = times*mod; 1 + flipsCopy < coins) {
-        mod = std::min<uint64_t>(mod, coins-flipsCopy+1);
-    }
-    const auto pow = coins - mod;
+namespace
+{
+inline bool even(uint64_t n)
+{
+    return 0 == n % 2;
+}
+inline bool odd(uint64_t n)
+{
+    return 1 == n% 2;
+}
+}
 
-    return power_.get(pow+1);
+uint64_t CircleOfCoins::numberOfPossibleSolutions(uint64_t coins, uint64_t flips) const {
+    if (coins == flips) {
+        return power_.get(1);
+    }
+
+    const uint64_t gcd_ = gcd(coins, flips);
+
+    if (odd(flips)) {
+        return power_.get(coins-gcd_+1);
+    }
+
+    uint64_t modulo = gcd(2*coins, flips);
+
+    if (gcd_==1 || modulo == gcd_) {
+        return power_.get(coins-modulo+1);
+    }
+
+    return power_.get(coins - gcd_);
 }
 
 uint64_t CircleOfCoins::smallestModulo(uint64_t coins, uint64_t flips) {
     assert(coins >= flips);
     assert(flips > 0);
 
-    return findSmallestMultiple(flips, 2*coins);
+    return gcd(flips, 2*coins);
 }
 CircleOfCoins::CircleOfCoins(uint64_t maxSize): maxSize_{maxSize}, power_{maxSize} {}
 uint64_t CircleOfCoins::numberOfPossibleSolutions(uint64_t coins) const {
