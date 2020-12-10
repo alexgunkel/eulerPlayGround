@@ -17,6 +17,9 @@ TEST(CircleOfCoins, testGetReachables)
 
 TEST(CircleOfCoins, smallestModuloProduct) {
     CircleOfCoins circleOfCoins{18, 1};
+    EXPECT_EQ(1, circleOfCoins.smallestModulo(17, 9));
+    EXPECT_EQ(1, circleOfCoins.smallestModulo(1'000'000, 999'999));
+    EXPECT_EQ(2, circleOfCoins.smallestModulo(1'000'000, 999'998));
     EXPECT_EQ(1, circleOfCoins.smallestModulo(9, 5));
     EXPECT_EQ(4, circleOfCoins.smallestModulo(6, 4));
     EXPECT_EQ(4, circleOfCoins.smallestModulo(10, 4));
@@ -24,13 +27,14 @@ TEST(CircleOfCoins, smallestModuloProduct) {
     EXPECT_EQ(3, circleOfCoins.smallestModulo(9, 3));
     EXPECT_EQ(4, circleOfCoins.smallestModulo(14, 8));
     EXPECT_EQ(6, circleOfCoins.smallestModulo(18, 6));
+    EXPECT_EQ(9, circleOfCoins.smallestModulo(18, 9));
     EXPECT_EQ(12, circleOfCoins.smallestModulo(18, 12));
     EXPECT_EQ(18, circleOfCoins.smallestModulo(18, 18));
 }
 
 TEST(CircleOfCoins, numberOfPossibleSolutions)
 {
-    CircleOfCoins circle(2ull << 20ull);
+    CircleOfCoins circle(20);
     for (uint64_t i = 1; i <= 20; ++i) {
         for (uint64_t j = 1; j <= i; ++j) {
             EXPECT_EQ(circle.reachableStates(i, j, 0).size(), circle.numberOfPossibleSolutions(i, j)) << i << " " << j;
