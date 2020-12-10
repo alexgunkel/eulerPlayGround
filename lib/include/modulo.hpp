@@ -7,6 +7,8 @@
 #include <memory>
 #include <vector>
 
+uint64_t findSmallestMultiple(uint64_t base, uint64_t modulo);
+
 struct Factors {
     uint64_t interval;
     uint64_t power;

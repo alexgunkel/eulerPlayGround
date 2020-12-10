@@ -17,6 +17,7 @@ TEST(CircleOfCoins, testGetReachables)
 
 TEST(CircleOfCoins, smallestModuloProduct) {
     CircleOfCoins circleOfCoins{18, 1};
+    EXPECT_EQ(1, circleOfCoins.smallestModulo(501, 101));
     EXPECT_EQ(1, circleOfCoins.smallestModulo(17, 9));
     EXPECT_EQ(1, circleOfCoins.smallestModulo(1'000'000, 999'999));
     EXPECT_EQ(2, circleOfCoins.smallestModulo(1'000'000, 999'998));

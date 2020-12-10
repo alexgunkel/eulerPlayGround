@@ -51,32 +51,6 @@ uint64_t CircleOfCoins::smallestModulo(uint64_t coins, uint64_t flips) {
     assert(coins >= flips);
     assert(flips > 0);
 
-    uint64_t res{flips}, runner{flips};
-    const uint64_t max = 2*coins;
-    uint64_t control{0};
-    std::set<uint64_t> found{};
-
-    do {
-        if(++control == 100) {
-            assert(false);
-        }
-        found.insert(runner);
-        if (runner) {
-            res = std::min(res, runner);
-        }
-
-        assert(runner < max);
-        const uint64_t times = ((max-runner) / flips)+1;
-        runner += flips*times;
-        assert(runner >= max);
-        runner %= max;
-        assert(runner <= flips);
-        if (runner < flips) {
-            uint64_t diffTimes = (flips-1)/(flips-runner);
-            runner = flips - (diffTimes*(flips-runner));
-        }
-    } while (!found.contains(runner) && res > 1);
-
-    return res;
+    return findSmallestMultiple(flips, 2*coins);
 }
 CircleOfCoins::CircleOfCoins(uint64_t maxSize): power_{maxSize} {}

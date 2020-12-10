@@ -1,6 +1,7 @@
 
 add_library(circleOfCoins circle_of_coins.cpp circle_of_coins.hpp)
 target_include_directories(circleOfCoins PUBLIC ${LIB_includes})
+target_link_libraries(circleOfCoins PUBLIC ${LIB_link})
 
 add_executable(tst-728 circle.test.cpp)
 target_link_libraries(tst-728 circleOfCoins test_main)

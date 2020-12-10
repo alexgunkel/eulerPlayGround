@@ -7,7 +7,9 @@ include(cmake/gtest.cmake)
 enable_testing()
 
 set(LIB_includes ${CMAKE_SOURCE_DIR}/lib/include)
+add_subdirectory(lib)
+
+set(LIB_link eulib)
 
 add_subdirectory(src)
-add_subdirectory(lib)
 
