@@ -30,7 +30,7 @@ class SmallestMultipleTest
 TEST_P(SmallestMultipleTest, testExamples) {
     const auto sample = GetParam();
 
-    const auto result{findSmallestMultiple(sample.base, sample.modulo)};
+    const auto result{findSmallestMultipleFast(sample.base, sample.modulo)};
     EXPECT_EQ(sample.expected, result);
 }
 
@@ -39,7 +39,18 @@ INSTANTIATE_TEST_SUITE_P(TestSamples, SmallestMultipleTest,
                                          SmallestMultiplesSample{3, 10, 1},
                                          SmallestMultiplesSample{4, 10, 2},
                                          SmallestMultiplesSample{8, 10, 2},
+                                         SmallestMultiplesSample{5, 34, 1},
                                          SmallestMultiplesSample{9, 34, 1},
+                                         SmallestMultiplesSample{277, 524, 1},
                                          SmallestMultiplesSample{999'998, 1'000'000, 2},
                                          SmallestMultiplesSample{8, 10, 2},
                                          SmallestMultiplesSample{101, 1002, 1}));
+
+TEST(SmallestMultipleCompre, fastAndSlow)
+{
+    for (uint64_t i = 1; i <= 1'000u; i++) {
+        for (uint64_t j = 1; j <= i; j++) {
+            EXPECT_EQ(findSmallestMultiple(j, i), findSmallestMultipleFast(j, i)) << i << " " << j;
+        }
+    }
+}

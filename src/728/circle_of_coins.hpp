@@ -15,10 +15,14 @@ class CircleOfCoins {
 
     [[nodiscard]] std::set<uint64_t> reachableStates(uint64_t coins, uint64_t flips, uint64_t start) const;
     [[nodiscard]] uint64_t numberOfPossibleSolutions(uint64_t coins, uint64_t flips) const;
+    [[nodiscard]] uint64_t numberOfPossibleSolutions(uint64_t coins) const;
+    [[nodiscard]] uint64_t numberOfPossibleSolutions() const;
     [[nodiscard]] static uint64_t smallestModulo(uint64_t coins, uint64_t flips) ;
 
   private:
-    Power<2u, 1'000'000'007> power_;
+    static constexpr uint64_t mod{1'000'000'007};
+    uint64_t maxSize_;
+    Power<2u, mod> power_;
 
     [[nodiscard]] static uint64_t normalize(uint64_t coins, uint64_t value) ;
 };

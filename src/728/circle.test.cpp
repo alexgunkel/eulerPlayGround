@@ -49,11 +49,8 @@ uint64_t sumUpTo(uint64_t limit)
     CircleOfCoins circleOfCoins{limit};
 
     for (uint64_t i = 1; i <= limit; ++i) {
-        for (uint64_t j = 1; j <= i; ++j) {
-            uint64_t next = circleOfCoins.numberOfPossibleSolutions(i, j);
-            sum += next;
-            sum %= 1'000'000'007;
-        }
+        sum += circleOfCoins.numberOfPossibleSolutions(i);
+        sum %= 1'000'000'007;
     }
 
     return sum;
@@ -64,6 +61,15 @@ TEST(CircleOfCoins, testAccumulation)
     EXPECT_EQ(22, sumUpTo(3));
     EXPECT_EQ(10444, sumUpTo(10));
     EXPECT_EQ(853837042, sumUpTo(1000));
+    EXPECT_EQ(853837042, sumUpTo(1'000'000));
+}
+
+TEST(CircleOfCoins, testAccumulationMethod)
+{
+    EXPECT_EQ(22, CircleOfCoins{3}.numberOfPossibleSolutions());
+    EXPECT_EQ(10444, CircleOfCoins{10}.numberOfPossibleSolutions());
+    EXPECT_EQ(853837042, CircleOfCoins{1000}.numberOfPossibleSolutions());
+    EXPECT_EQ(813362526, CircleOfCoins{10'000}.numberOfPossibleSolutions());
 }
 
 TEST(CircleOfCoins, testDividables)

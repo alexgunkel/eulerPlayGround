@@ -8,3 +8,7 @@ target_link_libraries(tst-728 circleOfCoins test_main)
 
 add_executable(run-728 main.cpp)
 target_link_libraries(run-728 circleOfCoins)
+
+find_package(benchmark REQUIRED)
+add_executable(bm-728 circle.bench.cpp)
+target_link_libraries(bm-728 circleOfCoins benchmark::benchmark_main)

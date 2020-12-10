@@ -4,16 +4,17 @@
 
 int run()
 {
-    const CircleOfCoins circle{1'000'001};
+    const uint64_t stage{10*10*10*10*10*10*10};
+    const CircleOfCoins circle{stage};
     uint64_t sum{0};
-    for (uint64_t i = 1; i <= 10'000; ++i) {
+    for (uint64_t i = 1; i <= stage; ++i) {
         for (uint64_t j = 1; j <= i; ++j) {
             const uint64_t options = circle.numberOfPossibleSolutions(i, j);
 
             sum = (sum + options) % 1'000'000'007;
         }
 
-        if (! (i % 100)) {
+        if (! (i % 1'000)) {
             std::cout << "\t\t\tafter " << i << ": " << sum << "\n";
         }
     }

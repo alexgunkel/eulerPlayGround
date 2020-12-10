@@ -53,4 +53,22 @@ uint64_t CircleOfCoins::smallestModulo(uint64_t coins, uint64_t flips) {
 
     return findSmallestMultiple(flips, 2*coins);
 }
-CircleOfCoins::CircleOfCoins(uint64_t maxSize): power_{maxSize} {}
+CircleOfCoins::CircleOfCoins(uint64_t maxSize): maxSize_{maxSize}, power_{maxSize} {}
+uint64_t CircleOfCoins::numberOfPossibleSolutions(uint64_t coins) const {
+    uint64_t res{0};
+    for (uint64_t i = 1; i <= coins; i++) {
+        res += numberOfPossibleSolutions(coins, i);
+        res %= mod;
+    }
+
+    return res;
+}
+uint64_t CircleOfCoins::numberOfPossibleSolutions() const {
+    uint64_t res{0};
+    for (uint64_t coins = 1; coins <= maxSize_; coins++) {
+        res += numberOfPossibleSolutions(coins);
+        res %= mod;
+    }
+
+    return res;
+}
