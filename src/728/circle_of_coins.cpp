@@ -38,13 +38,9 @@ uint64_t CircleOfCoins::normalize(uint64_t coins, uint64_t value) {
 
 uint64_t CircleOfCoins::numberOfPossibleSolutions(uint64_t coins, uint64_t flips) const {
     uint64_t mod = smallestModulo(coins, flips);
-    uint64_t flipsCopy{mod};
-    while (flipsCopy < coins) {
-        if (1 + flipsCopy < coins) {
-            mod = std::min<uint64_t>(mod, coins-flipsCopy+1);
-        }
-
-        flipsCopy += mod;
+    uint64_t times = (coins-1)/mod;
+    if (uint64_t flipsCopy = times*mod; 1 + flipsCopy < coins) {
+        mod = std::min<uint64_t>(mod, coins-flipsCopy+1);
     }
     const auto pow = coins - mod;
 
