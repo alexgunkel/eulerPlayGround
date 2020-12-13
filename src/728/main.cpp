@@ -20,25 +20,38 @@ int run()
     }
 
     std::cout << sum << "\n";
+
+    return 0;
 }
 
 int print()
 {
-    CircleOfCoins circleOfCoins(14, 8);
-    std::cout << circleOfCoins.numberOfPossibleSolutions(14, 8) << "\n";
+    const uint64_t max{50};
+    std::string sep{","};
+    for (uint64_t i = 1; i <= max; i++) {
+        std::cout << sep << i;
+    }
+    std::cout << "\n";
 
-    for (uint64_t i = 0; i < 9; i++) {
-        for (const auto state : circleOfCoins.reachableStates(14, 8, i)) {
-            std::cout << state << " : " << std::bitset<14>{state} << "\t";
+    for (uint64_t coins = 1; coins <= max; coins++) {
+        std::cout << coins;
+        for (uint64_t flips = 1; flips <= max; flips++) {
+            std::cout << sep;
+            if (flips <= coins) {
+                const uint64_t pow{CircleOfCoins::numberOfPossibleSolutionsPower(coins, flips)};
+                std::cout << (coins-pow) << "-" << pow;
+            }
         }
+
         std::cout << "\n";
     }
 
+    return 0;
 }
 
 int main()
 {
-    return run();
+    return print();
 }
 
 /**

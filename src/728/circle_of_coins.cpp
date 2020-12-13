@@ -46,26 +46,33 @@ inline bool odd(uint64_t n)
 {
     return 1 == n% 2;
 }
+
+inline bool divisibleBy(uint64_t divided, uint64_t divisor)
+{
+    return (divided % divisor) == 0;
+}
 }
 
 uint64_t CircleOfCoins::numberOfPossibleSolutions(uint64_t coins, uint64_t flips) const {
-    if (coins == flips) {
-        return power_.get(1);
-    }
+    return power_.get(numberOfPossibleSolutionsPower(coins, flips));
+}
 
-    const uint64_t gcd_ = gcd(coins, flips);
+uint64_t CircleOfCoins::numberOfPossibleSolutionsPower(uint64_t coins, uint64_t flips) {
+    if (coins == flips) {
+        return 1;
+    }
 
     if (odd(flips)) {
-        return power_.get(coins-gcd_+1);
+        const uint64_t gcd_{gcd(coins, flips)};
+        return coins-gcd_+1;
     }
 
-    uint64_t modulo = gcd(2*coins, flips);
 
-    if (gcd_==1 || modulo == gcd_) {
-        return power_.get(coins-modulo+1);
+    if (uint64_t modulo = gcd(2*coins, flips); divisibleBy(coins, modulo)) {
+        return coins-modulo+1;
     }
 
-    return power_.get(coins - gcd_);
+    return coins - gcd(coins, flips);
 }
 
 uint64_t CircleOfCoins::smallestModulo(uint64_t coins, uint64_t flips) {
