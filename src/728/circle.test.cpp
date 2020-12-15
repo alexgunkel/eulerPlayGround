@@ -2,37 +2,6 @@
 
 #include "gtest/gtest.h"
 
-TEST(CircleOfCoins, testGetReachables)
-{
-    CircleOfCoins circle(14, 8);
-
-    std::vector<std::set<uint64_t>> res{};
-    res.reserve(15);
-    for (int i = 0; i < 15; ++i) {
-        res.push_back(circle.reachableStates(14, 8, i));
-    }
-
-    EXPECT_EQ(circle.numberOfPossibleSolutions(14, 8), res.at(0).size());
-}
-
-TEST(CircleOfCoins, smallestModuloProduct) {
-    CircleOfCoins circleOfCoins{18, 1};
-    EXPECT_EQ(1, circleOfCoins.smallestModulo(501, 101));
-    EXPECT_EQ(1, circleOfCoins.smallestModulo(17, 9));
-    EXPECT_EQ(1, circleOfCoins.smallestModulo(1'000'000, 999'999));
-    EXPECT_EQ(2, circleOfCoins.smallestModulo(1'000'000, 999'998));
-    EXPECT_EQ(1, circleOfCoins.smallestModulo(9, 5));
-    EXPECT_EQ(4, circleOfCoins.smallestModulo(6, 4));
-    EXPECT_EQ(4, circleOfCoins.smallestModulo(10, 4));
-    EXPECT_EQ(2, circleOfCoins.smallestModulo(10, 6));
-    EXPECT_EQ(3, circleOfCoins.smallestModulo(9, 3));
-    EXPECT_EQ(4, circleOfCoins.smallestModulo(14, 8));
-    EXPECT_EQ(6, circleOfCoins.smallestModulo(18, 6));
-    EXPECT_EQ(9, circleOfCoins.smallestModulo(18, 9));
-    EXPECT_EQ(12, circleOfCoins.smallestModulo(18, 12));
-    EXPECT_EQ(18, circleOfCoins.smallestModulo(18, 18));
-}
-
 TEST(CircleOfCoins, numberOfPossibleSolutions)
 {
     CircleOfCoins circle(20);
@@ -65,15 +34,24 @@ TEST(CircleOfCoins, testAccumulation)
 
 TEST(CircleOfCoins, testAccumulationMethod)
 {
-    EXPECT_EQ(22, CircleOfCoins{3}.numberOfPossibleSolutions());
-    EXPECT_EQ(10444, CircleOfCoins{10}.numberOfPossibleSolutions());
-    EXPECT_EQ(853837042, CircleOfCoins{1000}.numberOfPossibleSolutions());
+    EXPECT_EQ(356, CircleOfCoins{6}.numberOfPossibleSolutions());
+    //EXPECT_EQ(22, CircleOfCoins{3}.numberOfPossibleSolutions());
+    //EXPECT_EQ(10444, CircleOfCoins{10}.numberOfPossibleSolutions());
+    //EXPECT_EQ(853837042, CircleOfCoins{1000}.numberOfPossibleSolutions());
     //EXPECT_EQ(813362526, CircleOfCoins{10'000}.numberOfPossibleSolutions());
+}
+
+TEST(CircleOfCoins, testFlipwise)
+{
+    EXPECT_EQ(0b1111110ull, CircleOfCoins{6}.numberOfPossibleSolutionsForFLipNumber(1));
+    EXPECT_EQ(0b0111110ull, CircleOfCoins{6}.numberOfPossibleSolutionsForFLipNumber(2));
+    EXPECT_EQ(0b0100010ull, CircleOfCoins{6}.numberOfPossibleSolutionsForFLipNumber(3));
 }
 
 TEST(CircleOfCoins, testDividables)
 {
     CircleOfCoins circleOfCoins{2ull << 18ul};
+    EXPECT_EQ(0b1000000ul, circleOfCoins.numberOfPossibleSolutions(6, 1));
     EXPECT_EQ(1u << 18u, circleOfCoins.reachableStates(18, 1, 0).size());
     EXPECT_EQ(1u << 18u, circleOfCoins.numberOfPossibleSolutions(18, 1));
     EXPECT_EQ(1u << 17u, circleOfCoins.reachableStates(18, 2, 0).size());

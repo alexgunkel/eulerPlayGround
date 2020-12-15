@@ -1,14 +1,38 @@
+#include "analyzer.hpp"
 #include "solver.hpp"
-#include <string>
 #include <iostream>
+#include <string>
+#include "primes.hpp"
 
 int main(int argc, char** argv) {
-    eu_735::Integer i{1000};
-    if (argc > 1) {
-        i = std::stoll(std::string{argv[1]});
-    }
+    eu_735::Integer i{100};
 
-    std::cout << eu_735::Solver::solveParallel(i) << "\n";
+    uint64_t count{0};
+    for (int j = 1; j <= i; ++j) {
+        std::cout << j << ": ";
+        for (int k = 1; k <= j; ++k) {
+            if ((2*j*j) % k == 0) {
+                std::cout << k << ", ";
+                count++;
+            }
+        }
+        std::cout << "\n";
+    }
+    std::cout << "count: " << count << "\n";
+
+    std::cout << "times\n";
+
+    Generator generator{i};
+    uint64_t sum = 0;
+    for (const auto prime : generator.generate()) {
+
+        for (uint64_t cur = prime, p=1; cur <= i; cur = power<uint64_t>(prime, ++p)) {
+            uint64_t add = (i - cur)/power<uint64_t>(prime, (p+1)/2) + 1;
+            std::cout << prime << "  " << cur << ": " << add << "\n";
+            sum += add;
+        }
+    }
+    std::cout << sum << "\n";
 
     return 0;
 }

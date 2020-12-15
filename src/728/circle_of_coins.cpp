@@ -2,6 +2,7 @@
 #include "circle_of_coins.hpp"
 #include "modulo.hpp"
 #include "gcd.hpp"
+#include "primes.hpp"
 #include <cassert>
 #include <set>
 
@@ -91,12 +92,43 @@ uint64_t CircleOfCoins::numberOfPossibleSolutions(uint64_t coins) const {
 
     return res;
 }
-uint64_t CircleOfCoins::numberOfPossibleSolutions() const {
+
+uint64_t CircleOfCoins::numberOfPossibleSolutionsForFLipNumber(uint64_t flips) const {
     uint64_t res{0};
-    for (uint64_t coins = 1; coins <= maxSize_; coins++) {
-        res += numberOfPossibleSolutions(coins);
+    uint64_t lowerBound{flips};
+    uint64_t upperBound{std::min((2*flips), maxSize_+1)};
+    uint64_t part{0};
+    for (uint64_t i = lowerBound; i < upperBound; ++i) {
+        part += numberOfPossibleSolutions(i, flips);
+        part %= mod;
+    }
+    uint64_t ratio{((maxSize_-lowerBound+1)/(upperBound-lowerBound))};
+    for (int i = 0; i < ratio; ++i) {
+        res += power_.get(i*lowerBound) * part;
+        res %= mod;
+    }
+    for (uint64_t i = (maxSize_-lowerBound)+2; i <= maxSize_; ++i) {
+        res += numberOfPossibleSolutions(i, flips);
         res %= mod;
     }
 
+    uint64_t alternative{0};
+    for (uint64_t i = 1; i <= flips; i++) {
+        alternative += numberOfPossibleSolutions(maxSize_, i);
+        alternative &= mod;
+    }
+
+    assert(alternative == res);
+
     return res;
+}
+
+uint64_t CircleOfCoins::numberOfPossibleSolutions() const {
+    uint64_t compare{0};
+    for (uint64_t coins = 1; coins <= maxSize_; coins++) {
+        compare += numberOfPossibleSolutions(coins);
+        compare %= mod;
+    }
+
+    return compare;
 }

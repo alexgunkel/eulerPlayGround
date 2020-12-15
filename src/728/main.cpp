@@ -27,6 +27,7 @@ int run()
 int print()
 {
     const uint64_t max{50};
+    Power<2, 1'000'007> power{100};
     std::string sep{","};
     for (uint64_t i = 1; i <= max; i++) {
         std::cout << sep << i;
@@ -39,7 +40,7 @@ int print()
             std::cout << sep;
             if (flips <= coins) {
                 const uint64_t pow{CircleOfCoins::numberOfPossibleSolutionsPower(coins, flips)};
-                std::cout << (coins-pow) << "-" << pow;
+                std::cout << (coins-pow) << "-" << pow << "-" << power.get(pow);
             }
         }
 

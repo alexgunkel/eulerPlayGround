@@ -15,4 +15,4 @@ void bm_construct_generate(benchmark::State& state) {
 }
 }
 
-BENCHMARK(bm_construct_generate)->RangeMultiplier(10)->Range(10, std::pow(10, 10));
+BENCHMARK(bm_construct_generate)->RangeMultiplier(10)->Range(10, std::pow(10, 7));

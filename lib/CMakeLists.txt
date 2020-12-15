@@ -1,6 +1,6 @@
 
 
-add_library(eulib STATIC src/modulo.cpp src/gcd.cpp)
+add_library(eulib STATIC src/modulo.cpp src/gcd.cpp src/primes.cpp)
 target_include_directories(eulib PUBLIC ${LIB_includes})
 
 add_executable(tst-libs test/gcd.test.cpp test/modulo.test.cpp test/primes.test.cpp)

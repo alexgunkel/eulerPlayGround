@@ -1,4 +1,5 @@
 #include "gcd.hpp"
+#include "primes.hpp"
 
 #include <iostream>
 #include <cinttypes>
@@ -6,26 +7,24 @@
 
 int main()
 {
-    const uint64_t max{100};
+    const uint64_t max{1'000'000};
+    Generator generator{1'000'000};
+    std::cout << generator.size() << " " << generator.last() << "\n";
+    uint64_t maxLength{0};
+    Factorizer factorizer{max};
 
-    std::string trenner{","};
-    std:: cout << 1;
-    for (int j = 0; j <= max; ++j) {
-        std::cout << trenner << j;
-    }
-    std::cout << "\n";
+    for (uint64_t i = 1; i < max; ++i) {
+        std::cout << i << ": ";
+        const auto res{factorizer.factorize(i)};
 
-    for (uint64_t i = 1; i <= max; ++i) {
-        std::cout << i;
-        for (uint64_t j = 1; j <= max; ++j) {
-            std::cout << trenner;
-            if (i <= j) {
-                std::cout << gcd(j, i) << "-" << gcd(2*j, i);
-            }
+        for (const auto prim : res) {
+            std::cout << prim << ", ";
         }
 
         std::cout << "\n";
-        trenner = "";
     }
+
+    std::cout << "\n" << maxLength << "\n";
+
     return 0;
 }

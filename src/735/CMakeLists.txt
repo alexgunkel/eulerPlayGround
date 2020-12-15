@@ -3,7 +3,8 @@ add_library(eu735l STATIC sieve.hpp sieve.cpp solver.hpp solver.cpp analyzer.hpp
 target_link_libraries(eu735l PUBLIC tbb)
 
 add_executable(eu735 main.cpp)
-target_link_libraries(eu735 eu735l)
+target_include_directories(eu735 PUBLIC ${LIB_includes})
+target_link_libraries(eu735 eu735l ${LIB_link})
 
 add_executable(tst-735 ${TEST_MAIN} sieve.test.cpp solver.test.cpp analyzer.test.cpp)
 target_link_libraries(tst-735 pthread gtest eu735l)
