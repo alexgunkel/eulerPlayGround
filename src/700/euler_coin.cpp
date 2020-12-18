@@ -61,24 +61,25 @@ uint64_t EulerCoin::print(uint64_t number) const noexcept {
 }
 
 EulerCoin::Result EulerCoin::first() const {
-    const uint64_t times{mod_/factor_ + 1};
-
     Result result{
-        .next = (times*factor_) % mod_,
-        .previous = factor_,
-        .factor = times,
+        .value = factor_,
+        .previous = 0,
+        .factor = 1,
     };
 
     return result;
 }
 EulerCoin::Result EulerCoin::next(const EulerCoin::Result &last) const {
-    Result result{.next=last.next, .previous=last.next,.factor=last.factor};
+    assert(last.value != 0);
+    Result result{.value =last.value, .previous=last.value,.factor=last.factor};
 
-    while (result.next >= last.next) {
-        result.next += factor_;
-        result.next %= mod_;
-        result.factor++;
+    while (result.value >= last.value) {
+        result.value += factor_;
+        result.value %= mod_;
+        result.factor += 1;
     }
 
+    assert(result.value <= result.previous);
+    assert(result.factor > last.factor);
     return result;
 }

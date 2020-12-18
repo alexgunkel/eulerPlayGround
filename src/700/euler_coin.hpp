@@ -11,9 +11,13 @@ class EulerCoin {
 
     struct Result
     {
-        uint64_t next;
+        uint64_t value;
         uint64_t previous;
         uint64_t factor;
+
+        operator bool() const {
+            return value && value != previous;
+        }
     };
 
     [[nodiscard]] Result first() const;
