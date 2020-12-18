@@ -4,9 +4,11 @@
 #include <deque>
 #include <queue>
 
-TEST(EulerCoin, testFirst)
+TEST(EulerCoin, testDefaultExample)
 {
-    EulerCoin eulerCoin{1'504'170'715'041'707, 4'503'599'627'370'517};
+    constexpr uint64_t factor{1'504'170'715'041'707};
+    constexpr uint64_t mod{4'503'599'627'370'517};
+    EulerCoin eulerCoin{factor, mod};
     std::deque<uint64_t> expectedContainer{
         8912517754604,
         2044785486369,
@@ -27,22 +29,27 @@ TEST(EulerCoin, testFirst)
 
     auto res{eulerCoin.first()};
     EXPECT_EQ(1, res.factor);
-    EXPECT_EQ(1'504'170'715'041'707, res.value);
+    EXPECT_EQ(factor, res.value);
     EXPECT_EQ(0, res.previous);
 
     while (!expectedList.empty()) {
         auto expected{expectedList.front()};
         expectedList.pop();
 
+        const auto lastFactor{res.factor};
         res = eulerCoin.next(res);
         EXPECT_EQ(expected, res.value);
+
+        for (uint64_t i = lastFactor; i < res.factor; i++) {
+            EXPECT_LT(res.value, i*factor % mod);
+        }
     }
 }
 
 class EulerCoinTest : public testing::TestWithParam<std::tuple<uint64_t, uint64_t>>
 {};
 
-TEST_P(EulerCoinTest, testPlausibilityOfFirst)
+TEST_P(EulerCoinTest, testPlausibility)
 {
     const auto factor{std::get<0>(GetParam())};
     const auto mod{std::get<1>(GetParam())};

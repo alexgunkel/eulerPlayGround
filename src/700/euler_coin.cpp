@@ -4,7 +4,8 @@
 #include <cassert>
 
 EulerCoin::EulerCoin(uint64_t factor, uint64_t mod)
-    : factor_{factor}, mod_{mod} {}
+    : factor_{factor}, mod_{mod}, min_{gcd(mod_, factor_)} {}
+
 uint64_t EulerCoin::print(uint64_t number) const noexcept {
     uint64_t minus{mod_ % factor_};
     uint64_t runner{107};
@@ -71,12 +72,25 @@ EulerCoin::Result EulerCoin::first() const {
 }
 EulerCoin::Result EulerCoin::next(const EulerCoin::Result &last) const {
     assert(last.value != 0);
-    Result result{.value =last.value, .previous=last.value,.factor=last.factor};
+    assert(last.value <= factor_);
+    Result result{.value =last.value, .previous=last.value,.factor=last.factor, .previousFactor=last.factor};
+
+    if (last.previous && last.diff() < last.value) {
+        result.value -= last.diff();
+        result.factor += last.factor-last.previousFactor;
+
+        return result;
+    }
 
     while (result.value >= last.value) {
-        result.value += factor_;
+        uint64_t dist{(mod_-result.value)/factor_ + 1};
+        result.value += factor_*dist;
         result.value %= mod_;
-        result.factor += 1;
+        if (result.value == min_) {
+            result.value = last.value;
+            return result;
+        }
+        result.factor += dist;
     }
 
     assert(result.value <= result.previous);
