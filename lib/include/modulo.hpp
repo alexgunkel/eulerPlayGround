@@ -26,17 +26,14 @@ constexpr Factors log(uint64_t base, uint64_t value) {
     return {res, runner};
 }
 
-template <uint64_t Base, uint64_t Modulo>
-class Power
-{
+template <uint64_t Base, uint64_t Modulo> class Power {
     static constexpr Factors interval_{log(Base, Modulo)};
     static std::shared_ptr<Power> instance_;
     std::vector<uint64_t> cache_{1};
+
   public:
     void raiseSize(uint64_t size);
-    explicit Power(uint64_t size) {
-        raiseSize(size);
-    };
+    explicit Power(uint64_t size) { raiseSize(size); };
 
     [[nodiscard]] uint64_t get(uint64_t key) const {
         const auto i = interval_.interval;
@@ -63,9 +60,32 @@ void Power<Basis, Modulo>::raiseSize(uint64_t size) {
     size = (size / interval_.interval);
     cache_.reserve(size);
     while (size--) {
-        cache_.push_back(
-            (cache_.back() * interval_.power) % Modulo
-        );
+        cache_.push_back((cache_.back() * interval_.power) % Modulo);
+    }
+};
+
+class ModuloMultiplier {
+    uint64_t base_;
+    uint64_t mod_;
+    uint64_t maxFactor_;
+
+  public:
+    explicit ModuloMultiplier(uint64_t base, uint64_t mod)
+        : base_{base}, mod_{mod},
+          maxFactor_{std::numeric_limits<uint64_t>::max() / base_} {};
+
+    [[nodiscard]] uint64_t multiply(uint64_t in) const {
+        uint64_t res{1};
+        uint64_t cache{};
+        while (in >= maxFactor_) {
+            in -= maxFactor_;
+            cache = (base_ * maxFactor_) % mod_;
+            res = (res*cache) % mod_;
+        }
+
+        res *= (in * base_) % mod_;
+
+        return res % mod_;
     }
 };
 

@@ -3,6 +3,8 @@
 
 #include <cassert>
 #include <cinttypes>
+#include <map>
+
 class EulerCoin {
 
   public:
@@ -33,6 +35,12 @@ class EulerCoin {
     uint64_t factor_;
     uint64_t mod_;
     uint64_t min_;
+
+    struct Jump {
+        uint64_t distance;
+        uint64_t difference;
+    };
+    mutable std::map<uint64_t, Jump> previousJumps_;
 };
 
 #endif // EULERPLAYGROUND_EULER_COIN_HPP
