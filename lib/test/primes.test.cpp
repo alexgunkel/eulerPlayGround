@@ -20,13 +20,6 @@ TEST(FactorizingTest, testSmallSamples)
     EXPECT_EQ(2, result.at(5));
 }
 
-TEST(FactorizingTest, testBigExample)
-{
-    const auto result{factorize(1'000'000'007ull)};
-
-    EXPECT_EQ(13, result.size());
-}
-
 TEST(FactorizingTest, testBiggerRange)
 {
     for (uint64_t i = 1; i < 1000; ++i) {
