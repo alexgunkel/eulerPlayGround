@@ -1,0 +1,2 @@
+
+constexpr auto dataFile{"@SRC_PATH_22@"};
