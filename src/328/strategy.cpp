@@ -4,44 +4,6 @@
 #include <cassert>
 #include <numeric>
 
-uint64_t Strategy::worstCase(uint64_t from, uint64_t to) {
-    assert(from <= to);
-    const uint64_t dist{to - from};
-    if (!dist) {
-        return 0;
-    }
-
-    if (dist == 1) {
-        return from;
-    }
-
-    if (dist == 2) {
-        return from + 1;
-    }
-
-    uint64_t pivot{to};
-    assert(pivot - 3 >= from);
-    uint64_t result{std::numeric_limits<uint64_t>::max()};
-
-    while (pivot - 3 >= from) {
-        pivot -= 3;
-        assert(from <= pivot);
-        assert(pivot < to);
-        auto left{from < pivot ? worstCase(from, pivot - 1) : 0};
-        auto right{worstCase(pivot + 1, to)};
-        result = std::min(result, pivot + std::max(left, right));
-    }
-
-    return result;
-}
-uint64_t Strategy::worstCase(uint64_t given) {
-    if (given == 1) {
-        return 0;
-    }
-
-    return worstCase(1, given);
-}
-
 Strategy::Strategy(uint64_t size) : cache_{} {
     cache_.reserve(size);
     assert(cache_.capacity() >= size);
