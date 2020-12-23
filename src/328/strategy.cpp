@@ -1,4 +1,5 @@
 #include "strategy.hpp"
+#include "distance_finder.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -14,19 +15,18 @@ Strategy::Strategy(uint64_t size) : cache_{} {
 
     for (uint64_t max = 5; max <= size; max++) {
         uint64_t fromTop{0};
-        uint64_t pivot{0};
-        uint64_t nextDistance{2};
+        uint64_t pivot;
+        uint64_t nextPosition{max - 1};
         uint64_t result{std::numeric_limits<uint64_t>::max()};
 
         do {
-            pivot = max + 1 - nextDistance;
+            pivot = nextPosition;
             uint64_t fromCache{cache_.at(pivot - 2)};
-            result =
-                std::min(result, pivot + std::max(fromTop, fromCache));
+            result = std::min(result, pivot + std::max(fromTop, fromCache));
 
+            nextPosition = DistanceFinder::next(pivot, fromTop);
             fromTop += pivot;
-            nextDistance <<= 1u;
-        } while (max > nextDistance);
+        } while (0 < nextPosition);
 
         cache_.push_back(result);
     }
