@@ -21,8 +21,8 @@ TEST_P(DistanceFinderTest, testNextDistance) {
 }
 
 INSTANTIATE_TEST_SUITE_P(InstantiationWithNormalCases, DistanceFinderTest,
-                         testing::Values(DistanceFinderSample{19, 17, 13},
-                                         DistanceFinderSample{19 + 17, 13, 0},
-                                         DistanceFinderSample{1110, 1108, 1104},
+                         testing::Values(//DistanceFinderSample{19, 17, 13},
+                                         //DistanceFinderSample{19 + 17, 13, 0},
+                                         //DistanceFinderSample{1110, 1108, 1104},
                                          DistanceFinderSample{2218, 1104, 1096},
                                          DistanceFinderSample{3322, 1096, 1080}));
