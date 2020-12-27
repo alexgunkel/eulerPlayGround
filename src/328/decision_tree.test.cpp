@@ -22,7 +22,8 @@ TEST_P(DecisionTreeBuilderTest, testSamples) {
 
 INSTANTIATE_TEST_SUITE_P(instantiateTrees, DecisionTreeBuilderTest,
                          testing::Values(BuilderTestSample{8, 12, 5},
-                                         BuilderTestSample{100, 400, 85}));
+                                         BuilderTestSample{100, 400, 85},
+                                         BuilderTestSample{1'000, 6'753, 873}));
 
 class ExtenderTest
     : public testing::TestWithParam<std::tuple<uint64_t, uint64_t, uint64_t>> {

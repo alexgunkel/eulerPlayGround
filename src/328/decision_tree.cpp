@@ -1,6 +1,8 @@
 #include "decision_tree.hpp"
+#include "design_by_contract.hpp"
 
 #include <cassert>
+#include <iostream>
 
 DecisionTree::DecisionTree(uint64_t value)
     : DecisionTree{value, nullptr, nullptr} {}
@@ -59,12 +61,12 @@ DecisionTree DecisionTree::build(uint64_t upperBoundary, uint64_t max) {
     return DecisionTree(0);
 }
 void DecisionTree::extend(uint64_t till) {
-    assert(till < value_);
+    assert(till <= value_);
     assert((lowerBoundary() - till) < 5); //< only one group
 
     if (lower()) {
         lower_->extend(till);
-    } else if (value_-till <= 1) {
+    } else if (value_ - till <= 1) {
         return;
     } else if (value_ - till <= 3) {
         assert(value_ > 2);
@@ -80,7 +82,7 @@ void DecisionTree::extend(uint64_t till) {
     }
 
     const auto upperMax{upper_ ? upper_->max() : 0};
-    if (lower_ && lower_->max() > (upperMax + value())) {
+    if (lower_ && lower_->max() + value() > (upperMax + value()) + lower()->value()) {
         DecisionTree node{value_, std::move(lower_->upper_), std::move(upper_)};
 
         upper_ = std::make_unique<DecisionTree>(std::move(node));
@@ -88,7 +90,7 @@ void DecisionTree::extend(uint64_t till) {
         setLower(std::move(lower_->lower_));
     }
 
-    assert(lowerBoundary() == till);
+    assert(lowerBoundary() >= till);
 }
 uint64_t DecisionTree::upperBoundary() const {
     if (upper_) {
@@ -103,4 +105,30 @@ uint64_t DecisionTree::lowerBoundary() const {
     }
 
     return std::max(1ul, value_ - 1);
+}
+uint64_t DecisionTree::extend() {
+    uint64_t nextLowerBoundary{0};
+    if (uint64_t low = lowerBoundary(); low > 1) {
+        nextLowerBoundary = std::max(low, 5ul) - 4;
+        extend(nextLowerBoundary);
+    }
+
+    return nextLowerBoundary;
+}
+
+void DecisionTree::print(const std::string &indent, size_t depth) const {
+    if (upper()) {
+        upper()->print(indent, depth + 1);
+    }
+
+    size_t levelCp{depth};
+    while (levelCp--) {
+        std::cout << indent;
+    }
+    std::cout << indent << value_ << " (" << max() << ", level " << depth
+              << ")\n";
+
+    if (lower()) {
+        lower()->print(indent, depth + 1);
+    }
 }

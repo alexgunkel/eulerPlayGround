@@ -1,4 +1,5 @@
 #include "strategy.hpp"
+#include "decision_tree.hpp"
 #include "distance_finder.hpp"
 
 #include <algorithm>
@@ -14,19 +15,16 @@ Strategy::Strategy(uint64_t size) : cache_{} {
     cache_.push_back(4);
 
     for (uint64_t max = 5; max <= size; max++) {
-        uint64_t fromTop{0};
-        uint64_t pivot;
-        uint64_t nextPosition{max - 1};
+        DecisionTree tree{max - 1};
+        uint64_t pivot, fromTree, fromCache;
         uint64_t result{std::numeric_limits<uint64_t>::max()};
 
         do {
-            pivot = nextPosition;
-            uint64_t fromCache{cache_.at(pivot - 2)};
-            result = std::min(result, pivot + std::max(fromTop, fromCache));
-
-            nextPosition = DistanceFinder::next(pivot, fromTop);
-            fromTop += pivot;
-        } while (0 < nextPosition);
+            pivot = tree.lowerBoundary() - 1;
+            fromCache = cache_.at(pivot - 2);
+            fromTree = tree.max();
+            result = std::min(result, pivot + std::max(fromTree, fromCache));
+        } while (2 < tree.extend() && fromCache >= fromTree);
 
         cache_.push_back(result);
     }

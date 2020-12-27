@@ -14,6 +14,7 @@ class DecisionTree {
     [[nodiscard]] uint64_t max() const;
 
     void extend(uint64_t till);
+    uint64_t extend();
 
     [[nodiscard]] uint64_t value() const;
     void setUpper(std::unique_ptr<DecisionTree>);
@@ -21,7 +22,9 @@ class DecisionTree {
     [[nodiscard]] const DecisionTree* upper() const;
     [[nodiscard]] const DecisionTree* lower() const;
     [[nodiscard]] uint64_t upperBoundary() const;
-    uint64_t lowerBoundary() const;
+    [[nodiscard]] uint64_t lowerBoundary() const;
+
+    void print(const std::string& indent, size_t depth) const;
 
     static DecisionTree build(uint64_t upperBoundary);
     static DecisionTree build(uint64_t upperBoundary, uint64_t max);

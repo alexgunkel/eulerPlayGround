@@ -12,7 +12,7 @@ std::ostream &operator<<(std::ostream &out, const WorstCaseSample &ws) {
 
     return out;
 }
-} // namespace
+} // namespace strategy::test
 
 using strategy::test::WorstCaseSample;
 
@@ -26,8 +26,9 @@ TEST_P(StrategySumTest, testTotalSum) {
 
 INSTANTIATE_TEST_SUITE_P(
     testTotalSum, StrategySumTest,
-    testing::Values(WorstCaseSample{100, 17'575}, WorstCaseSample{8, 43},
-                    WorstCaseSample{200'000, 263'614'204'513}));
+    testing::Values(WorstCaseSample{100, 17'575}, WorstCaseSample{8, 43}
+                    ,WorstCaseSample{200'000, 261'019'124'465}
+ ));
 
 class StrategyTest : public testing::TestWithParam<WorstCaseSample> {};
 
