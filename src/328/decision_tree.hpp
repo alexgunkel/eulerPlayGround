@@ -20,7 +20,7 @@ class DecisionTree {
     void setLower(std::unique_ptr<DecisionTree>);
     [[nodiscard]] const DecisionTree* upper() const;
     [[nodiscard]] const DecisionTree* lower() const;
-    uint64_t upperBoundary() const;
+    [[nodiscard]] uint64_t upperBoundary() const;
     uint64_t lowerBoundary() const;
 
     static DecisionTree build(uint64_t upperBoundary);

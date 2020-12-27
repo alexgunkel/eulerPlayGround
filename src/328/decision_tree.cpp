@@ -50,6 +50,8 @@ DecisionTree DecisionTree::build(uint64_t upperBoundary) {
         firstLevel.extend(lowerBoundary);
     }
 
+    firstLevel.extend(1);
+
     return firstLevel;
 }
 
@@ -57,14 +59,19 @@ DecisionTree DecisionTree::build(uint64_t upperBoundary, uint64_t max) {
     return DecisionTree(0);
 }
 void DecisionTree::extend(uint64_t till) {
-    assert(till < value() && (value_ - till) >= 3); //< only whole groups
+    assert(till < value_);
+    assert((lowerBoundary() - till) < 5); //< only one group
 
     if (lower()) {
         lower_->extend(till);
-    } else if (value_ - till == 3) {
-        DecisionTree nextLowestGroup{till + 1};
+    } else if (value_-till <= 1) {
+        return;
+    } else if (value_ - till <= 3) {
+        assert(value_ > 2);
+        DecisionTree nextLowestGroup{value_ - 2};
         setLower(std::make_unique<DecisionTree>(std::move(nextLowestGroup)));
-    } else if (value_ - till == 5) {
+    } else if (value_ - till <= 5) {
+        assert(value_ > 4);
         setLower(std::make_unique<DecisionTree>(
             value_ - 2, std::make_unique<DecisionTree>(value_ - 4)));
     } else {
@@ -78,7 +85,7 @@ void DecisionTree::extend(uint64_t till) {
 
         upper_ = std::make_unique<DecisionTree>(std::move(node));
         value_ = lower_->value_;
-        lower_ = std::move(lower_->lower_);
+        setLower(std::move(lower_->lower_));
     }
 
     assert(lowerBoundary() == till);
