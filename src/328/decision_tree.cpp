@@ -132,3 +132,19 @@ void DecisionTree::print(const std::string &indent, size_t depth) const {
         lower()->print(indent, depth + 1);
     }
 }
+uint64_t DecisionTree::cost(uint64_t value) const {
+    assert(value <= upperBoundary());
+    assert(value >= lowerBoundary());
+
+    uint64_t result{value_};
+    if (value < value_ && lower()) {
+        result += lower()->cost(value);
+    }
+
+    if (value > value_ && upper()) {
+        assert(upper());
+        result += upper()->cost(value);
+    }
+
+    return result;
+}

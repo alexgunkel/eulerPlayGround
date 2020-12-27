@@ -20,9 +20,26 @@ TEST_P(DecisionTreeBuilderTest, testSamples) {
     EXPECT_EQ(1ul, tree.lowerBoundary());
 }
 
+TEST_P(DecisionTreeBuilderTest, testCosts)
+{
+    const auto tree{DecisionTree::build(GetParam().max)};
+
+    std::vector<uint64_t> results(GetParam().max, 0);
+
+    uint64_t maximum{tree.max()};
+
+    for (uint64_t i{1}; i <= GetParam().max; i++) {
+        results[i-1] = tree.cost(i);
+        EXPECT_LE(results[i-1], GetParam().worstCaseCost);
+    }
+
+    EXPECT_EQ(GetParam().max, results.size());
+}
+
 INSTANTIATE_TEST_SUITE_P(instantiateTrees, DecisionTreeBuilderTest,
                          testing::Values(BuilderTestSample{8, 12, 5},
                                          BuilderTestSample{100, 400, 85},
+                                         BuilderTestSample{200, 900, 85},
                                          BuilderTestSample{1'000, 6'753, 873}));
 
 class ExtenderTest

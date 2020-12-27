@@ -24,6 +24,8 @@ class DecisionTree {
     [[nodiscard]] uint64_t upperBoundary() const;
     [[nodiscard]] uint64_t lowerBoundary() const;
 
+    uint64_t cost(uint64_t value) const;
+
     void print(const std::string& indent, size_t depth) const;
 
     static DecisionTree build(uint64_t upperBoundary);
